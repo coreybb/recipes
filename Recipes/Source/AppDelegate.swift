@@ -1,27 +1,36 @@
-//
-//  AppDelegate.swift
-//  Recipes
-//
-//  Created by Corey Beebe on 10/16/24.
-//
-
 import UIKit
+import Combine
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    private let networkingService = NetworkingService(networkClient: URLSession.shared)
 
+    
+    //  MARK: - App Lifecycle
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupWindow()
         return true
     }
-    
+}
+
+
+
+//  MARK: - Private API
+
+fileprivate extension AppDelegate {
     
     private func setupWindow() {
         window = UIWindow()
         window?.makeKeyAndVisible()
-        window?.rootViewController = RecipesController()
+        window?.rootViewController = rootController()
+    }
+    
+    
+    private func rootController() -> UIViewController {
+        let controller = RecipesController()
+        return controller
     }
 }
-
