@@ -2,6 +2,7 @@ import UIKit
 
 final class RecipesController: UIViewController {
     
+    private let mainView = RecipesView()
     private let recipesRepository: RecipesRepository
     
     
@@ -17,10 +18,15 @@ final class RecipesController: UIViewController {
     }
     
     
+    
     //  MARK: - View Lifecycle
+    
+    override func loadView() {
+        view = mainView
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
     }
 }
-

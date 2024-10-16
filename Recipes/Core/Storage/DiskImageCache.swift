@@ -15,7 +15,7 @@ actor DiskImageCache {
     init() throws {
         self.fileManager = FileManager.default
         let cachesDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask)
-        self.cacheDirectoryURL = cachesDirectory[0].appendingPathComponent("IMAGE_CACHE")
+        self.cacheDirectoryURL = cachesDirectory[0].appendingPathComponent("RECIPES_IMAGE_CACHE")
         
         try fileManager.createDirectory(
             at: cacheDirectoryURL,
@@ -27,7 +27,6 @@ actor DiskImageCache {
     
     // MARK: - Internal API
     func save(image: UIImage, fileName: String) async throws {
-    
         guard let data = image.pngData() else {
             throw ImageError.serialization
         }
@@ -37,7 +36,6 @@ actor DiskImageCache {
     
     
     func getImage(fileName: String) async throws -> UIImage {
-        
         let fileURL = url(forFileName: fileName)
         
         guard fileManager.fileExists(atPath: fileURL.path) else {

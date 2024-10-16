@@ -1,15 +1,6 @@
 import UIKit.UIImage
 
-
-protocol ImageLocalRepository: ImageRepository {
-    
-    func getImage(forURL url: URL) async throws -> UIImage
-    func saveImage(_ image: UIImage, forURL url: URL) async throws
-}
-
-
 final actor DefaultLocalImageRepository: ImageLocalRepository {
-    
     
     //  MARK: - Private Properties
     private let memoryCache = NSCache<NSString, UIImage>()
@@ -25,7 +16,6 @@ final actor DefaultLocalImageRepository: ImageLocalRepository {
             diskCache = nil
             print("Warning: Unable to initialize disk cache.")
         }
-        
     }
     
     
@@ -47,10 +37,14 @@ final actor DefaultLocalImageRepository: ImageLocalRepository {
         saveImageToMemoryCache(image, url: url)
         try await saveImageToDisk(image, url: url)
     }
+}
+
+
+
+//  MARK: - Private API
+
+extension DefaultLocalImageRepository {
     
-    
-    
-    //  MARK: - Private API
     private func saveImageToDisk(_ image: UIImage, url: URL) async throws {
         try await diskCache?.save(image: image, fileName: url.absoluteString)
     }

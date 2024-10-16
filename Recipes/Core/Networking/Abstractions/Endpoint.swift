@@ -121,7 +121,7 @@ extension Endpoint {
     /// Creates a `URLRequest` object configured with the endpoint's details.
     /// - Parameter encoder: A `JSONEncoder` for encoding the request body if one is present.
     /// - Returns: A configured `URLRequest` object.
-    func urlRequest(using encoder: JSONEncoder?) throws -> URLRequest {
+    func urlRequest(using encoder: JSONEncoder? = nil) throws -> URLRequest {
         
         var request = URLRequest(url: url)
         request.httpMethod = method.rawValue
@@ -138,6 +138,7 @@ extension Endpoint {
 
 
 //  MARK: - Private API
+
 private extension Endpoint {
     
     private var baseComponents: URLComponents? {
@@ -151,7 +152,9 @@ private extension Endpoint {
 }
 
 
+
 //  MARK: - Array Extension Helper
+
 private extension Array where Element == HTTPHeader {
 
     func toDictionary() -> [String: String] {

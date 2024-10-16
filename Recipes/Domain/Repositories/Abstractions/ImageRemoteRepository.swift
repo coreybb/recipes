@@ -6,18 +6,13 @@ protocol ImageRemoteRepository: ImageRepository {
 }
 
 
-final actor DefaultImageRemoteRepository: ImageRemoteRepository {
+extension ImageRemoteRepository where Self: NetworkServicing {
     
     func getImage(forURL url: URL) async throws -> UIImage {
-        let (data, _) = try await URLSession(
-            configuration: URLSessionConfiguration.default
-        )
-            .data(from: url)
-        
+        let data = try await networkingService.requestData(DynamicEndpoint(url))
         guard let image = UIImage(data: data) else {
             throw ImageError.invalidData
         }
-        
         return image
     }
 }

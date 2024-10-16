@@ -30,7 +30,7 @@ fileprivate extension AppDelegate {
     
     private func rootController() -> UIViewController {
         let networkingService = NetworkingService(networkClient: URLSession.shared)
-        let recipesRepo = RecipesRemoteRepository(networkingService: networkingService)
+        let recipesRepo = DefaultRecipesRemoteRepository(networkingService: networkingService)
         let controller = RecipesController(recipesRepository: recipesRepo)
         return controller
     }
