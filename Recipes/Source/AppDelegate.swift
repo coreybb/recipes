@@ -1,11 +1,10 @@
 import UIKit
-import Combine
+
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    private let networkingService = NetworkingService(networkClient: URLSession.shared)
 
     
     //  MARK: - App Lifecycle
@@ -30,7 +29,9 @@ fileprivate extension AppDelegate {
     
     
     private func rootController() -> UIViewController {
-        let controller = RecipesController()
+        let networkingService = NetworkingService(networkClient: URLSession.shared)
+        let recipesRepo = RecipesRemoteRepository(networkingService: networkingService)
+        let controller = RecipesController(recipesRepository: recipesRepo)
         return controller
     }
 }

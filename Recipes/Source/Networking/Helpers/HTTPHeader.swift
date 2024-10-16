@@ -3,8 +3,6 @@ import Foundation
 /// A struct that represents an HTTP header, which consists of a name and a value.
 /// This is used to add headers to `URLRequest` objects for configuring network requests.
 struct HTTPHeader: Sendable {
-
-    //  MARK: - Public Properties
     let name: Name
     let value: String
 
