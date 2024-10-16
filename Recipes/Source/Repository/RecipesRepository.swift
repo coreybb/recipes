@@ -4,7 +4,7 @@ protocol RecipesRepository {
 }
 
 
-actor RecipesRemoteRepository: RecipesRepository {
+final actor RecipesRemoteRepository: RecipesRepository {
     
     
     //  MARK: - Private Properties
