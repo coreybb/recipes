@@ -1,13 +1,14 @@
 import UIKit
 
-
+//  MARK: - App Lifecycle
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
+    private let dependencyContainer = DependencyContainer()
 
     
-    //  MARK: - App Lifecycle
+    
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupWindow()
@@ -29,9 +30,6 @@ fileprivate extension AppDelegate {
     
     
     private func rootController() -> UIViewController {
-        let networkingService = NetworkingService(networkClient: URLSession.shared)
-        let recipesRepo = DefaultRecipesRemoteRepository(networkingService: networkingService)
-        let controller = RecipesController(recipesRepository: recipesRepo)
-        return controller
+        RecipeListController(container: dependencyContainer)
     }
 }

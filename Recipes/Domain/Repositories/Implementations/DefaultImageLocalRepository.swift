@@ -1,6 +1,6 @@
 import UIKit.UIImage
 
-final actor DefaultLocalImageRepository: ImageLocalRepository {
+final actor DefaultImageLocalRepository: ImageLocalRepository {
     
     //  MARK: - Private Properties
     private let memoryCache = NSCache<NSString, UIImage>()
@@ -43,7 +43,7 @@ final actor DefaultLocalImageRepository: ImageLocalRepository {
 
 //  MARK: - Private API
 
-extension DefaultLocalImageRepository {
+extension DefaultImageLocalRepository {
     
     private func saveImageToDisk(_ image: UIImage, url: URL) async throws {
         try await diskCache?.save(image: image, fileName: url.absoluteString)

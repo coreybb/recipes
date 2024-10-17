@@ -1,4 +1,4 @@
-final actor DefaultRecipesRemoteRepository: RecipesRepository, NetworkServicing {
+final actor DefaultRecipesRemoteRepository: RecipeRepository, NetworkServicing {
     let networkingService: NetworkingService
     
     init(networkingService: NetworkingService) {
