@@ -33,7 +33,7 @@ final class RecipeDetailView: UIView {
         super.init(frame: .zero)
         backgroundColor = .white
         clipsToBounds = true
-        layer.cornerRadius = 11
+        layer.cornerRadius = 16
         layoutUI()
     }
     

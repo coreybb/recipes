@@ -33,7 +33,7 @@ final class RecipeCollectionCell: UICollectionViewCell {
     
     func configure(with viewModel: RecipeCellViewModel) {
         recipeDetailView.nameLabel.text = viewModel.name
-        recipeDetailView.cuisineLabel.text = viewModel.cuisine.rawValue
+        recipeDetailView.cuisineLabel.text = viewModel.cuisine
         subscribeToImageUpdates(viewModel)
         viewModel.loadImageIfNeeded()
     }

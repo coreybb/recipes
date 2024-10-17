@@ -3,6 +3,13 @@ import Combine
 
 final class RecipeListController: UIViewController {
     
+    //  MARK: - Internal Properties
+    
+    weak var coordinator: RecipeListCoordinating?
+    
+    
+    //  MARK: - Private Properties
+    
     private let mainView = RecipesView()
     private let viewModel: RecipeListViewModel
     private lazy var collectionDataSource = RecipeCollectionDataSource(collectionView: mainView.collectionView)
@@ -18,6 +25,7 @@ final class RecipeListController: UIViewController {
             fetchImageUseCase: container.fetchImageUseCase
         )
         super.init(nibName: nil, bundle: nil)
+        title = "Recipes"
     }
     
     
@@ -89,6 +97,6 @@ final class RecipeListController: UIViewController {
     
 
     private func handleSelected(_ cellViewModel: RecipeCellViewModel) {
-        
+        coordinator?.showRecipeDetail(for: cellViewModel.recipe)
     }
 }

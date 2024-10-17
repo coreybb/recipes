@@ -5,36 +5,31 @@ final class RecipeCellViewModel {
     
     //  MARK: - Internal Properties
     
-    let name: String
-    let cuisine: Cuisine
-    let sourceURLString: String?
+    let recipe: Recipe
+    var name: String { recipe.name }
+    var cuisine: String { recipe.cuisine.rawValue }
     @Published private(set) var image: UIImage?
     
     
     //  MARK: - Private Properties
     
-    private let imageURL: URL?
+    private var imageURL: URL? { URL(string: recipe.photoURLSmall) }
     private let fetchImageUseCase: FetchImageUseCase
     private var imageLoadingTask: Task<Void, Never>?
     private var imageLoadDidFail = false
-    private let id: String
+    private var id: String { recipe.id }
     
     
     //  MARK: - Initialization
     
     init(recipe: Recipe, fetchImageUseCase: FetchImageUseCase) {
-        self.name = recipe.name
-        self.cuisine = recipe.cuisine
-        self.sourceURLString = recipe.sourceURL
-        self.imageURL = URL(string: recipe.photoURLSmall)
+        self.recipe = recipe
         self.fetchImageUseCase = fetchImageUseCase
-        self.id = recipe.id
     }
     
     
     //  MARK: - Internal API
     func loadImageIfNeeded() {
-        
         guard image == nil,
               let url = imageURL,
               !imageLoadDidFail else {

@@ -6,6 +6,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     private let dependencyContainer = DependencyContainer()
+    private var coordinator: Coordinator?
 
     
     
@@ -30,6 +31,16 @@ fileprivate extension AppDelegate {
     
     
     private func rootController() -> UIViewController {
-        RecipeListController(container: dependencyContainer)
+        
+        let navigationController = UINavigationController()
+        navigationController.navigationBar.prefersLargeTitles = true
+        
+        coordinator = AppCoordinator(
+            navigationController: navigationController,
+            dependencyContainer: dependencyContainer
+        )
+        coordinator?.start()
+        
+        return navigationController
     }
 }

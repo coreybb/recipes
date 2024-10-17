@@ -5,7 +5,7 @@ protocol ShadowCasting: UIView {
     
     func addDropShadow(
         withOffset offset: CGFloat,
-        opacity: CGFloat,
+        opacity: Float,
         radius: CGFloat
     )
 }
@@ -16,13 +16,13 @@ extension ShadowCasting {
    
     func addDropShadow(
         withOffset offset: CGFloat = 2.5,
-        opacity: CGFloat = 0.3,
-        radius: CGFloat = 16
+        opacity: Float = 0.3,
+        radius: CGFloat = 12
     ) {
         layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.3
+        layer.shadowOpacity = opacity
         layer.shadowOffset = CGSize(width: 0, height: offset)
-        layer.shadowRadius = 16
+        layer.shadowRadius = radius
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
         layer.shouldRasterize = true
         layer.rasterizationScale = UIScreen.main.scale
