@@ -31,7 +31,7 @@ final class RecipeCollectionViewLayout: UICollectionViewFlowLayout {
         let itemsPerRow: CGFloat = numberOfItemsPerRow()
         let availableWidth = size.width - sectionInsets.left - sectionInsets.right
         let itemWidth = (availableWidth - minimumSpacing * (itemsPerRow - 1)) / itemsPerRow
-        let itemHeight = itemWidth * 1.5
+        let itemHeight = itemWidth * 1.3
         itemSize = CGSize(width: itemWidth, height: itemHeight)
     }
 

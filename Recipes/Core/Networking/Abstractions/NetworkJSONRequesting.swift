@@ -3,6 +3,30 @@ import Foundation
 /// Represents an empty response from an API call.
 struct EmptyResponse: Decodable {}
 
+
+// MARK: - Network JSON Requesting
+
+/// A protocol for handling network requests. It includes the necessary encoder and decoder for encoding requests and decoding responses.
+protocol NetworkJSONRequesting: NetworkDataRequesting, JSONCoding {
+    
+    /// Makes a network request to the specified endpoint and decodes the response into the specified response object type.
+    ///
+    /// - Parameters:
+    ///   - endpoint: The endpoint to which the request will be made..
+    /// - Returns: A response object that conforms to `Decodable`.
+    /// - Throws: Throws an error if the request fails or if decoding the response fails.
+    func request<ResponseObject: Decodable>(_ endpoint: any Endpoint) async throws -> ResponseObject
+}
+
+
+extension NetworkJSONRequesting {
+    
+    func request<ResponseObject: Decodable>(_ endpoint: any Endpoint) async throws -> ResponseObject {
+        try await requestData(endpoint).decode(using: decoder)
+    }
+}
+
+
 //  MARK: - Network Data Requesting
 
 protocol NetworkDataRequesting where Self: ClientNetworking {
@@ -34,32 +58,6 @@ fileprivate extension NetworkDataRequesting {
         return data
     }
 }
-
-
-
-// MARK: - Network JSON Requesting
-
-/// A protocol for handling network requests. It includes the necessary encoder and decoder for encoding requests and decoding responses.
-protocol NetworkJSONRequesting: NetworkDataRequesting, JSONCoding {
-    
-    /// Makes a network request to the specified endpoint and decodes the response into the specified response object type.
-    ///
-    /// - Parameters:
-    ///   - endpoint: The endpoint to which the request will be made..
-    /// - Returns: A response object that conforms to `Decodable`.
-    /// - Throws: Throws an error if the request fails or if decoding the response fails.
-    func request<ResponseObject: Decodable>(_ endpoint: any Endpoint) async throws -> ResponseObject
-}
-
-
-extension NetworkJSONRequesting {
-    
-    func request<ResponseObject: Decodable>(_ endpoint: any Endpoint) async throws -> ResponseObject {
-        try await requestData(endpoint).decode(using: decoder)
-    }
-}
-
-
 
 
 //  MARK: - Private Helper Extensions

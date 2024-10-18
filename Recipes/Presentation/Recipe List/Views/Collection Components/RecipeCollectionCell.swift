@@ -32,10 +32,16 @@ final class RecipeCollectionCell: UICollectionViewCell {
     //  MARK: - Internal API
     
     func configure(with viewModel: RecipeCellViewModel) {
+        self.viewModel = viewModel
         recipeDetailView.nameLabel.text = viewModel.name
         recipeDetailView.cuisineLabel.text = viewModel.cuisine
         subscribeToImageUpdates(viewModel)
-        viewModel.loadImageIfNeeded()
+        loadImageIfNeeded()
+    }
+    
+    
+    func loadImageIfNeeded() {
+        viewModel?.loadImageIfNeeded()
     }
     
     
@@ -46,26 +52,27 @@ final class RecipeCollectionCell: UICollectionViewCell {
     }
     
     
-    
     //  MARK: - Private API
     
     private func subscribeToImageUpdates(_ viewModel: RecipeCellViewModel) {
         imageSubscription = viewModel.$image
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] image in
-                self?.recipeDetailView.imageView.image = image ?? UIImage(systemName: "photo")!
-                    .withRenderingMode(.alwaysOriginal)
-                    .withTintColor(.gray)
-            }
+            .sink
+        { [weak self] image in
+            self?.handle(image)
+        }
+    }
+    
+    
+    private func handle(_ image: UIImage?) {
+        recipeDetailView.imageView.image = image ?? recipeDetailView.defaultImage
     }
     
     
     private func resetUI() {
         recipeDetailView.nameLabel.text = nil
         recipeDetailView.cuisineLabel.text = nil
-        recipeDetailView.imageView.image = UIImage(systemName: "photo")!
-            .withRenderingMode(.alwaysOriginal)
-            .withTintColor(.gray)
+        recipeDetailView.imageView.image = recipeDetailView.defaultImage
     }
     
 
@@ -85,7 +92,6 @@ final class RecipeCollectionCell: UICollectionViewCell {
         shadowView.addSubview(recipeDetailView)
         recipeDetailView.fillSuperview()
     }
-    
     
     
     //  MARK: - Deinitialization

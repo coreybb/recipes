@@ -4,28 +4,28 @@ final class RecipeDetailView: UIView {
     
     let nameLabel = {
         let label = UILabel()
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 14, weight: .black)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    
     let cuisineLabel = {
         let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    
-    let imageView = {
+    lazy var imageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "photo")!
-            .withRenderingMode(.alwaysOriginal)
-            .withTintColor(.gray)
+        imageView.image = defaultImage
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
+    let defaultImage = UIImage(systemName: "photo")!
+        .withRenderingMode(.alwaysOriginal)
+        .withTintColor(.gray)
     
     
     //  MARK: - Initialization
@@ -42,7 +42,6 @@ final class RecipeDetailView: UIView {
     }
     
     
-    
     //  MARK: - Private API
 
     private func layoutUI() {
@@ -54,16 +53,16 @@ final class RecipeDetailView: UIView {
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.7),
+            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.6),
             
-            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12),
             nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             
-            cuisineLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            cuisineLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             cuisineLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             cuisineLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            cuisineLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            cuisineLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -24)
         ])
     }
 }

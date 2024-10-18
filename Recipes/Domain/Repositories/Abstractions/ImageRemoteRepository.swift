@@ -1,7 +1,6 @@
 import UIKit
 
 protocol ImageRemoteRepository: ImageRepository {
-    
     func getImage(forURL url: URL) async throws -> UIImage
 }
 

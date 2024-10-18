@@ -1,6 +1,6 @@
 import UIKit
 
-final class RecipesView: UIView {
+final class RecipeListView: UIView {
     
     var collectionView = RecipeCollectionView()
     
@@ -17,7 +17,6 @@ final class RecipesView: UIView {
     
     
     private func layoutUI() {
-        
         addSubview(collectionView)
         collectionView.fillSuperview()
     }

@@ -6,7 +6,7 @@ final class RecipeListViewModel {
     //  MARK: - Internal Properties
     
     var onRecipeUpdation = PassthroughSubject<Void, Never>()
-    @Published var cellViewModels = [RecipeCellViewModel]()
+    @Published var displayedRecipeCellViewModels = [RecipeCellViewModel]()
     @Published private(set) var isLoading = false
     
     
@@ -15,6 +15,7 @@ final class RecipeListViewModel {
     private let repository: RecipeRepository
     private let fetchImageUseCase: FetchImageUseCase
     private var recipesFetchTask: Task<Void, Never>?
+    var recipeCellViewModels = [RecipeCellViewModel]()
     
     
     //  MARK: - Initialization
@@ -36,7 +37,7 @@ final class RecipeListViewModel {
             do {
                 let recipes = try await repository.fetchRecipes()
                 if !Task.isCancelled {
-                    await MainActor.run { handle(recipes) }
+                    await MainActor.run { handleStreamed(recipes) }
                 }
             } catch {
                 if !Task.isCancelled {
@@ -48,7 +49,7 @@ final class RecipeListViewModel {
     
     
     func refreshRecipes() {
-        cellViewModels = []
+        displayedRecipeCellViewModels = []
         streamRecipes()
     }
     
@@ -59,12 +60,30 @@ final class RecipeListViewModel {
     }
     
     
+    func searchRecipes(for query: String) {
+
+        guard !query.isEmpty else {
+            if displayedRecipeCellViewModels != recipeCellViewModels {
+                displayedRecipeCellViewModels = recipeCellViewModels
+            }
+            return
+        }
+        
+        displayedRecipeCellViewModels = recipeCellViewModels.filter {
+            $0.name.lowercased().contains(query.lowercased())
+            || $0.cuisine.lowercased().contains(query.lowercased())
+        }
+    }
+    
+    
     //  MARK: - Private API
     
-    private func handle(_ recipes: [Recipe]) {
-        cellViewModels = recipes.map {
+    private func handleStreamed(_ recipes: [Recipe]) {
+        let cellViewModels = recipes.map {
             RecipeCellViewModel(recipe: $0, fetchImageUseCase: fetchImageUseCase)
         }
+        recipeCellViewModels.append(contentsOf: cellViewModels)
+        displayedRecipeCellViewModels.append(contentsOf: cellViewModels)
         onRecipeUpdation.send()
     }
 }

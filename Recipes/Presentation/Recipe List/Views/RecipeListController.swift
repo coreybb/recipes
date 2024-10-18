@@ -10,7 +10,16 @@ final class RecipeListController: UIViewController {
     
     //  MARK: - Private Properties
     
-    private let mainView = RecipesView()
+    private lazy var searchController: UISearchController = {
+        let searchController: UISearchController = UISearchController()
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search recipes"
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
+        return searchController
+    }()
+    
+    private let mainView = RecipeListView()
     private let viewModel: RecipeListViewModel
     private lazy var collectionDataSource = RecipeCollectionDataSource(collectionView: mainView.collectionView)
     private let collectionDelegate = RecipeCollectionViewDelegate()
@@ -26,6 +35,8 @@ final class RecipeListController: UIViewController {
         )
         super.init(nibName: nil, bundle: nil)
         title = "Recipes"
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     
@@ -51,12 +62,13 @@ final class RecipeListController: UIViewController {
     
     private func setupView() {
         mainView.collectionView.dataSource = collectionDataSource
+        mainView.collectionView.prefetchDataSource = collectionDataSource
         mainView.collectionView.delegate = collectionDelegate
     }
     
     
     private func setupBindings() {
-        collectionDataSource.subscribeToCellViewModels(viewModel.$cellViewModels)
+        collectionDataSource.subscribeToCellViewModels(viewModel.$displayedRecipeCellViewModels)
         subscribeToLoadingState()
         collectionDelegate.onCellSelection = { [weak self] cellViewModel in
             self?.handleSelected(cellViewModel)
@@ -82,12 +94,14 @@ final class RecipeListController: UIViewController {
     
     
     private func handleCellWillAppear(_ cellViewModel: RecipeCellViewModel, cell: UICollectionViewCell) {
-        
+        guard let cell = cell as? RecipeCollectionCell else { return }
+        cell.loadImageIfNeeded()
     }
     
     
     private func handleCellWillDisappear(_ cellViewModel: RecipeCellViewModel, cell: UICollectionViewCell) {
-        
+        guard let cell = cell as? RecipeCollectionCell else { return }
+        cell.cancelImageLoading()
     }
     
     
@@ -98,5 +112,16 @@ final class RecipeListController: UIViewController {
 
     private func handleSelected(_ cellViewModel: RecipeCellViewModel) {
         coordinator?.showRecipeDetail(for: cellViewModel.recipe)
+    }
+}
+
+
+
+extension RecipeListController: UISearchControllerDelegate, UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        
+        guard let searchText = searchController.searchBar.text else { return }
+        viewModel.searchRecipes(for: searchText)
     }
 }

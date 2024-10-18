@@ -48,3 +48,25 @@ final class RecipeCollectionDataSource: UICollectionViewDiffableDataSource<Recip
         apply(snapshot, animatingDifferences: true)
     }
 }
+
+
+
+//  MARK: - Collection View Data Source Prefetching
+
+extension RecipeCollectionDataSource: UICollectionViewDataSourcePrefetching {
+    
+    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            guard let cellViewModel = itemIdentifier(for: $0) else { return }
+            cellViewModel.loadImageIfNeeded()
+        }
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach {
+            guard let cellViewModel = itemIdentifier(for: $0) else { return }
+            cellViewModel.cancelImageLoad()
+        }
+    }
+}
