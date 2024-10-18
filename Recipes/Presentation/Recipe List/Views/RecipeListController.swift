@@ -10,20 +10,12 @@ final class RecipeListController: UIViewController {
     
     //  MARK: - Private Properties
     
-    private lazy var searchController: UISearchController = {
-        let searchController: UISearchController = UISearchController()
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search recipes"
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-        return searchController
-    }()
-    
+    private lazy var searchController = RecipeSearchController()
     private let mainView = RecipeListView()
     private let viewModel: RecipeListViewModel
     private lazy var collectionDataSource = RecipeCollectionDataSource(collectionView: mainView.collectionView)
     private let collectionDelegate = RecipeCollectionViewDelegate()
-    private lazy var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     
     //  MARK: - View Lifecycle
@@ -49,64 +41,50 @@ final class RecipeListController: UIViewController {
         view = mainView
     }
     
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBindings()
         setupView()
         viewModel.streamRecipes()
     }
-    
-    
-    //  MARK: - Private API
+}
+
+
+//  MARK: - Private API
+
+extension RecipeListController {
     
     private func setupView() {
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        mainView.collectionView.delegate = collectionDelegate
         mainView.collectionView.dataSource = collectionDataSource
         mainView.collectionView.prefetchDataSource = collectionDataSource
-        mainView.collectionView.delegate = collectionDelegate
     }
     
     
-    private func setupBindings() {
-        collectionDataSource.subscribeToCellViewModels(viewModel.$displayedRecipeCellViewModels)
-        subscribeToLoadingState()
-        collectionDelegate.onCellSelection = { [weak self] cellViewModel in
-            self?.handleSelected(cellViewModel)
-        }
-        collectionDelegate.onCellWillAppear = { [weak self] cellViewModel, cell in
-            self?.handleCellWillAppear(cellViewModel, cell: cell)
-        }
-        collectionDelegate.onCellWillDisappear = { [weak self] cellViewModel, cell in
-            self?.handleCellWillDisappear(cellViewModel, cell: cell)
-        }
+    private func handleCellWillShow(_ cellViewModel: RecipeCellViewModel, _ cell: UICollectionViewCell) {
+        (cell as? RecipeCollectionCell)?.loadImageIfNeeded()
     }
     
     
-    private func subscribeToLoadingState() {
-        viewModel.$isLoading
-            .receive(on: RunLoop.main)
-            .sink { [weak self] isLoading in
-                self?.updateLoadingState(isLoading)
-            }
-            .store(in: &cancellables)
+    private func handleCellWillDisappear(_ cellViewModel: RecipeCellViewModel, _ cell: UICollectionViewCell) {
+        (cell as? RecipeCollectionCell)?.cancelImageLoading()
     }
     
     
-    
-    private func handleCellWillAppear(_ cellViewModel: RecipeCellViewModel, cell: UICollectionViewCell) {
-        guard let cell = cell as? RecipeCollectionCell else { return }
-        cell.loadImageIfNeeded()
-    }
-    
-    
-    private func handleCellWillDisappear(_ cellViewModel: RecipeCellViewModel, cell: UICollectionViewCell) {
-        guard let cell = cell as? RecipeCollectionCell else { return }
-        cell.cancelImageLoading()
+    private func handleScroll(_ scrollView: UIScrollView) {
+        guard scrollView.contentOffset.y > 100,
+              searchController.searchBar.isFirstResponder
+        else { return }
+        
+        searchController.searchBar.resignFirstResponder()
     }
     
     
     private func updateLoadingState(_ isLoading: Bool) {
-        
+        // TODO: - Implement me
     }
     
 
@@ -116,11 +94,41 @@ final class RecipeListController: UIViewController {
 }
 
 
+//  MARK: - Bindable
+
+extension RecipeListController: Bindable {
+    
+    private func setupBindings() {
+        collectionDataSource.subscribeToCellViewModels(viewModel.$displayedRecipeCellViewModels)
+        
+        subscribe(viewModel.$isLoading) { [weak self] in
+            self?.updateLoadingState($0)
+        }
+
+        subscribe(collectionDelegate.onCellSelection) { [weak self] in
+            self?.handleSelected($0)
+        }
+
+        subscribe(collectionDelegate.onCellWillShow) { [weak self] in
+            self?.handleCellWillShow($0.0, $0.1)
+        }
+
+        subscribe(collectionDelegate.onCellWillDisappear) { [weak self] in
+            self?.handleCellWillDisappear($0.0, $0.1)
+        }
+
+        subscribe(collectionDelegate.onScroll) { [weak self] in
+            self?.handleScroll($0)
+        }
+    }
+}
+
+
+//  MARK: - UISearchController Delegate
 
 extension RecipeListController: UISearchControllerDelegate, UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        
         guard let searchText = searchController.searchBar.text else { return }
         viewModel.searchRecipes(for: searchText)
     }

@@ -11,7 +11,7 @@ final class RecipeCollectionDataSource: UICollectionViewDiffableDataSource<Recip
     private var cancellables = Set<AnyCancellable>()
     
     
-    //  MARK: - Initialization
+    //  MARK: - Lifecycle
     
     init(collectionView: UICollectionView) {
         super.init(collectionView: collectionView) { collectionView, indexPath, cellViewModel in
@@ -26,12 +26,15 @@ final class RecipeCollectionDataSource: UICollectionViewDiffableDataSource<Recip
             return cell
         }
     }
-    
+
     
     //  MARK: - Internal API
     
     func subscribeToCellViewModels(_ publisher: Published<[RecipeCellViewModel]>.Publisher) {
-        publisher.sink { [weak self] cellViewModels in
+        publisher
+            .receive(on: DispatchQueue.main)
+            .sink
+        { [weak self] cellViewModels in
             self?.updateSnapshot(with: cellViewModels)
         }
         .store(in: &cancellables)
@@ -57,16 +60,14 @@ extension RecipeCollectionDataSource: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
-            guard let cellViewModel = itemIdentifier(for: $0) else { return }
-            cellViewModel.loadImageIfNeeded()
+            itemIdentifier(for: $0)?.loadImageIfNeeded()
         }
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
         indexPaths.forEach {
-            guard let cellViewModel = itemIdentifier(for: $0) else { return }
-            cellViewModel.cancelImageLoad()
+            itemIdentifier(for: $0)?.cancelImageLoad()
         }
     }
 }

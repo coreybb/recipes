@@ -36,7 +36,6 @@ final class RecipeCollectionViewLayout: UICollectionViewFlowLayout {
     }
 
     
-    
     //  MARK: - Private API
     
     private func numberOfItemsPerRow() -> CGFloat {

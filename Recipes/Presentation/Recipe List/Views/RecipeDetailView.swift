@@ -11,7 +11,7 @@ final class RecipeDetailView: UIView {
     }()
     let cuisineLabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -45,20 +45,39 @@ final class RecipeDetailView: UIView {
     //  MARK: - Private API
 
     private func layoutUI() {
-        addSubview(nameLabel)
-        addSubview(cuisineLabel)
+        layoutImageView()
+        layoutNameLabel()
+        layoutCuisineLabel()
+    }
+    
+    
+    private func layoutImageView() {
         addSubview(imageView)
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: topAnchor),
             imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.6),
-            
+            imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.6)
+        ])
+    }
+    
+    
+    private func layoutNameLabel() {
+        addSubview(nameLabel)
+        
+        NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12),
             nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            
+            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+        ])
+    }
+    
+    
+    private func layoutCuisineLabel() {
+        addSubview(cuisineLabel)
+        
+        NSLayoutConstraint.activate([
             cuisineLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
             cuisineLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             cuisineLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
