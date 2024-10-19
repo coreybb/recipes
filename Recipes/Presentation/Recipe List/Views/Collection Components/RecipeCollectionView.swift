@@ -45,7 +45,6 @@ final class RecipeCollectionView: UICollectionView {
     @objc
     private func beginRefreshing(_ sender: Any) {
         impactGenerator.impactOccurred()
-        refreshControl?.beginRefreshing()
         didPullToRefresh.send()
     }
 }

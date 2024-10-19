@@ -30,8 +30,6 @@ final class RecipeListViewModel {
     
     func streamRecipes() {
         cancelFetch()
-        recipeCellViewModels.removeAll()
-        displayedRecipeCellViewModels.removeAll()
         
         recipesFetchTask = Task {
             isLoading = true
@@ -51,7 +49,8 @@ final class RecipeListViewModel {
     
     
     func refreshRecipes() {
-        displayedRecipeCellViewModels = []
+        recipeCellViewModels.removeAll()
+        displayedRecipeCellViewModels.removeAll()
         streamRecipes()
     }
     

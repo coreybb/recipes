@@ -31,6 +31,12 @@ final class RecipeListView: UIView {
         button.addAction(action, for: .touchUpInside)
         return button
     }()
+    let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
     private var didLayoutSubviews = false
     
     
@@ -65,6 +71,7 @@ extension RecipeListView {
     private func layoutUI() {
         layoutCollectionView()
         layoutOptionsButton()
+        layoutActivityIndicator()
     }
     
     
@@ -84,5 +91,11 @@ extension RecipeListView {
         optionsButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -bottomPadding).isActive = true
         optionsButton.heightAnchor.constraint(equalToConstant: dimension).isActive = true
         optionsButton.widthAnchor.constraint(equalTo: optionsButton.heightAnchor).isActive = true
+    }
+    
+    
+    private func layoutActivityIndicator() {
+        addSubview(activityIndicator)
+        activityIndicator.centerInSuperview()
     }
 }

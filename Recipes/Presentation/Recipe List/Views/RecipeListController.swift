@@ -12,8 +12,6 @@ final class RecipeListController: UIViewController {
     
     private lazy var searchController = RecipeSearchController()
     private let mainView = RecipeListView()
-    private let impactGenerator: UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
-    private let activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView(style: .medium)
     private let viewModel: RecipeListViewModel
     private lazy var collectionDataSource = RecipeCollectionDataSource(collectionView: mainView.collectionView)
     private let collectionDelegate = RecipeCollectionViewDelegate()
@@ -49,7 +47,6 @@ final class RecipeListController: UIViewController {
         setupBindings()
         setupView()
         viewModel.streamRecipes()
-        impactGenerator.prepare()
     }
     
     
@@ -62,23 +59,6 @@ final class RecipeListController: UIViewController {
         mainView.collectionView.dataSource = collectionDataSource
         mainView.collectionView.prefetchDataSource = collectionDataSource
     }
-
-    
-    private func handleScroll(_ scrollView: UIScrollView) {
-        guard scrollView.contentOffset.y > 100,
-              searchController.searchBar.isFirstResponder
-        else { return }
-        
-        searchController.searchBar.resignFirstResponder()
-    }
-    
-    
-    private func updateLoadingState(_ isLoading: Bool) {
-        guard let refreshControl = mainView.collectionView.refreshControl else { return }
-        if refreshControl.isRefreshing {
-            refreshControl.endRefreshing()
-        }
-    }
 }
 
 
@@ -87,19 +67,14 @@ final class RecipeListController: UIViewController {
 extension RecipeListController: Bindable {
     
     private func setupBindings() {
+        setupCollectionViewBindings()
+        setupUIInteractionBindings()
+    }
+
+    
+    private func setupCollectionViewBindings() {
         collectionDataSource.subscribeToCellViewModels(viewModel.$displayedRecipeCellViewModels)
         
-        subscribe(mainView.onOptionsButtonTap) { [weak self] in
-            guard let self else { return }
-            self.coordinator?.showOptionsModal(from: self) { parameter in
-                self.viewModel.sortRecipes(by: parameter)
-            }
-        }
-
-        subscribe(viewModel.$isLoading) { [weak self] in
-            self?.updateLoadingState($0)
-        }
-
         subscribe(collectionDelegate.onCellSelection) { [weak self] cellViewModel in
             self?.coordinator?.showRecipeDetail(for: cellViewModel.recipe)
         }
@@ -111,13 +86,39 @@ extension RecipeListController: Bindable {
         subscribe(collectionDelegate.onCellWillDisappear) { cellViewModel in
             cellViewModel.cancelImageLoad()
         }
-
-        subscribe(collectionDelegate.onScroll) { [weak self] in
-            self?.handleScroll($0)
-        }
         
+        subscribe(collectionDelegate.onScroll) { [weak self] scrollView in
+            guard let self else { return }
+            guard scrollView.contentOffset.y > 100,
+                  searchController.searchBar.isFirstResponder
+            else { return }
+            
+            searchController.searchBar.resignFirstResponder()
+        }
+    }
+
+    
+    private func setupUIInteractionBindings() {
+        subscribe(mainView.onOptionsButtonTap) { [weak self] in
+            guard let self else { return }
+            coordinator?.showOptionsModal(from: self) { parameter in
+                self.viewModel.sortRecipes(by: parameter)
+            }
+        }
+
+        subscribe(viewModel.$isLoading) { [weak self] isLoading in
+            guard let self else { return }
+            if isLoading {
+                mainView.collectionView.refreshControl?.beginRefreshing()
+                mainView.activityIndicator.startAnimating()
+            } else {
+                mainView.collectionView.refreshControl?.endRefreshing()
+                mainView.activityIndicator.stopAnimating()
+            }
+        }
+
         subscribe(mainView.collectionView.didPullToRefresh) { [weak self] in
-            self?.viewModel.streamRecipes()
+            self?.viewModel.refreshRecipes()
         }
     }
 }
