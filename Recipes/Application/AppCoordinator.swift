@@ -2,6 +2,7 @@ import UIKit
 
 protocol RecipeListCoordinating: AnyObject {
     func showRecipeDetail(for recipe: Recipe)
+    func showOptionsModal(from viewController: UIViewController, onSortTapped: @escaping (SortParameter) -> Void)
 }
 
 
@@ -10,15 +11,18 @@ final class AppCoordinator: Coordinator {
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     private let dependencyContainer: DependencyContainer
+    private let controllerFactory: ControllerFactory
     
     
     //  MARK: - Initialization
     init(
         navigationController: UINavigationController,
-        dependencyContainer: DependencyContainer
+        dependencyContainer: DependencyContainer,
+        controllerFactory: ControllerFactory
     ) {
         self.navigationController = navigationController
         self.dependencyContainer = dependencyContainer
+        self.controllerFactory = controllerFactory
     }
     
     
@@ -29,9 +33,12 @@ final class AppCoordinator: Coordinator {
     
     
     func showRecipeList() {
-        let recipeListController = RecipeListController(container: dependencyContainer)
-        recipeListController.coordinator = self
-        push(recipeListController)
+        push(
+            controllerFactory.makeRecipeListController(
+                container: dependencyContainer,
+                coordinator: self
+            )
+        )
     }
     
     
@@ -43,9 +50,16 @@ final class AppCoordinator: Coordinator {
 
 
 //  MARK: - Recipe List Coordinating
+
 extension AppCoordinator: RecipeListCoordinating {
     
     func showRecipeDetail(for recipe: Recipe) {
-        print("showing detail for \(recipe.name)")
+        
+    }
+    
+    
+    func showOptionsModal(from viewController: UIViewController, onSortTapped: @escaping (SortParameter) -> Void) {
+        let controller = controllerFactory.makeRecipeListModalController(onSortTapped: onSortTapped)
+        viewController.present(controller, animated: true)
     }
 }

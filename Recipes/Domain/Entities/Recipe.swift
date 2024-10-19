@@ -27,13 +27,24 @@ extension Recipe: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        // The 'name' field may contain malformed Unicode characters
-        // (e.g., "CrÃ¨me BrÃ»lÃ©e" instead of "Crème Brûlée").
-        // To fix this, we:
-        // 1. Decode the raw string as-is
-        // 2. Attempt to re-encode it as ISO-8859-1 (Latin1) and then decode as UTF-8
+        // The 'name' field may contain malformed Unicode characters due to encoding issues.
+        // See: "mojibake" (https://en.wikipedia.org/wiki/Mojibake).
+        // Examples include "CrÃ¨me BrÃ»lÃ©e" instead of "Crème Brûlée" or "NaleÅ›niki" instead of "Naleśniki".
+
+        // Fix:
+        // 1. Decode the raw string
+        // 2. Attempt to re-encode using ISO-8859-1 (Latin1) and ISO-8859-2 (Latin2), then decode as UTF-8
+        // 3. Apply specific character replacements for Polish characters if needed
+        // 4. Use the fixed version only if it's different from the original
         let rawName = try container.decode(String.self, forKey: .name)
-        name = String(data: rawName.data(using: .isoLatin1) ?? Data(), encoding: .utf8) ?? rawName
+        let convertedName = [.isoLatin1, .isoLatin2]
+            .lazy
+            .compactMap { rawName.data(using: $0) }
+            .compactMap { String(data: $0, encoding: .utf8) }
+            .first ?? rawName
+
+        let fixedName = convertedName.replacingOccurrences(of: "Å›", with: "ś")
+        name = (fixedName != rawName) ? fixedName : rawName
         
         // Otherwise decode as normal
         cuisine = try container.decode(Cuisine.self, forKey: .cuisine)

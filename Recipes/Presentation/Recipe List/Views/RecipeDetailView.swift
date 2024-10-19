@@ -66,10 +66,13 @@ final class RecipeDetailView: UIView {
     private func layoutNameLabel() {
         addSubview(nameLabel)
         
+        let topPadding: CGFloat = 12
+        let lateralPadding: CGFloat = 8
+        
         NSLayoutConstraint.activate([
-            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 12),
-            nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: topPadding),
+            nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: lateralPadding),
+            nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -lateralPadding)
         ])
     }
     
@@ -77,11 +80,15 @@ final class RecipeDetailView: UIView {
     private func layoutCuisineLabel() {
         addSubview(cuisineLabel)
         
+        let topPadding: CGFloat = 8
+        let lateralPadding: CGFloat = 8
+        let minimiumBottomPadding: CGFloat = 24
+        
         NSLayoutConstraint.activate([
-            cuisineLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            cuisineLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            cuisineLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            cuisineLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -24)
+            cuisineLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: topPadding),
+            cuisineLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: lateralPadding),
+            cuisineLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -lateralPadding),
+            cuisineLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -minimiumBottomPadding)
         ])
     }
 }

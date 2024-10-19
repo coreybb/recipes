@@ -1,10 +1,12 @@
 import UIKit
+import Combine
 
 final class RecipeListView: UIView {
     
     //  MARK: - Internal Properties
     
     var collectionView = RecipeCollectionView()
+    let onOptionsButtonTap = PassthroughSubject<Void, Never>()
     
     
     //  MARK: - Private Properties
@@ -22,8 +24,9 @@ final class RecipeListView: UIView {
         button.backgroundColor = .black
         let action: UIAction = UIAction {
             [weak self] _ in
-            guard !(self?.collectionView.visibleCells.count == 0) else { return }
-            print("Show modal.")
+            guard let self else { return }
+            guard !(self.collectionView.visibleCells.count == 0) else { return }
+            self.onOptionsButtonTap.send()
         }
         button.addAction(action, for: .touchUpInside)
         return button

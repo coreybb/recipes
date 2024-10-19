@@ -11,7 +11,7 @@ final class RecipeListViewModel {
     
     
     //  MARK: - Private Properties
-
+    
     private let repository: RecipeRepository
     private let fetchImageUseCase: FetchImageUseCase
     private var recipesFetchTask: Task<Void, Never>?
@@ -30,6 +30,8 @@ final class RecipeListViewModel {
     
     func streamRecipes() {
         cancelFetch()
+        recipeCellViewModels.removeAll()
+        displayedRecipeCellViewModels.removeAll()
         
         recipesFetchTask = Task {
             isLoading = true
@@ -61,7 +63,6 @@ final class RecipeListViewModel {
     
     
     func searchRecipes(for query: String) {
-
         guard !query.isEmpty else {
             if displayedRecipeCellViewModels != recipeCellViewModels {
                 displayedRecipeCellViewModels = recipeCellViewModels
@@ -76,7 +77,18 @@ final class RecipeListViewModel {
     }
     
     
-    //  MARK: - Private API
+    func sortRecipes(by parameter: SortParameter) {
+        let sortedRecipes = sortedRecipes(by: parameter)
+        if displayedRecipeCellViewModels != sortedRecipes {
+            displayedRecipeCellViewModels = sortedRecipes
+        }
+    }
+}
+
+
+//  MARK: - Private API
+
+extension RecipeListViewModel {
     
     private func handleStreamed(_ recipes: [Recipe]) {
         let cellViewModels = recipes.map {
@@ -85,5 +97,23 @@ final class RecipeListViewModel {
         recipeCellViewModels.append(contentsOf: cellViewModels)
         displayedRecipeCellViewModels.append(contentsOf: cellViewModels)
         onRecipeUpdation.send()
+    }
+    
+    
+    private func sortedRecipes(by parameter: SortParameter) -> [RecipeCellViewModel] {
+        switch parameter {
+        case .name:
+            return recipeCellViewModels.sorted {
+                let space: String = " "
+                let emptyString: String = ""
+                let nameA = $0.name.components(separatedBy: space).first ?? emptyString
+                let nameB = $1.name.components(separatedBy: space).first ?? emptyString
+                return nameA.localizedCaseInsensitiveCompare(nameB) == .orderedAscending
+            }
+        case .cuisine:
+            return recipeCellViewModels.sorted {
+                $0.cuisine.localizedCaseInsensitiveCompare($1.cuisine) == .orderedAscending
+            }
+        }
     }
 }

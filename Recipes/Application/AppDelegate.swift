@@ -6,6 +6,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     private let dependencyContainer = DependencyContainer()
+    private let controllerFactory = ControllerFactory()
     private var coordinator: Coordinator?
 
     
@@ -35,7 +36,8 @@ fileprivate extension AppDelegate {
         
         coordinator = AppCoordinator(
             navigationController: navigationController,
-            dependencyContainer: dependencyContainer
+            dependencyContainer: dependencyContainer,
+            controllerFactory: controllerFactory
         )
         coordinator?.start()
         

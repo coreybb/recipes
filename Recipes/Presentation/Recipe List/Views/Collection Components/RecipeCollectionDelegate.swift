@@ -2,11 +2,10 @@ import UIKit
 import Combine
 
 final class RecipeCollectionViewDelegate: NSObject {
-    
-    typealias ViewModelAndCell = (RecipeCellViewModel, UICollectionViewCell)
+
     let onCellSelection = PassthroughSubject<RecipeCellViewModel, Never>()
-    let onCellWillShow = PassthroughSubject<ViewModelAndCell, Never>()
-    let onCellWillDisappear = PassthroughSubject<ViewModelAndCell, Never>()
+    let onCellWillShow = PassthroughSubject<RecipeCellViewModel, Never>()
+    let onCellWillDisappear = PassthroughSubject<RecipeCellViewModel, Never>()
     let onScroll = PassthroughSubject<UIScrollView, Never>()
 }
 
@@ -23,13 +22,13 @@ extension RecipeCollectionViewDelegate: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cellViewModel = cellViewModel(from: collectionView, indexPath) else { return }
-        onCellWillShow.send((cellViewModel, cell))
+        onCellWillShow.send(cellViewModel)
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cellViewModel = cellViewModel(from: collectionView, indexPath) else { return }
-        onCellWillDisappear.send((cellViewModel, cell))
+        onCellWillDisappear.send(cellViewModel)
     }
     
     
@@ -47,7 +46,6 @@ fileprivate extension RecipeCollectionViewDelegate {
         guard let dataSource = collectionView.dataSource as? RecipeCollectionDataSource,
               let cellViewModel = dataSource.itemIdentifier(for: indexPath)
         else {
-            print("There is no cell view model at the specified index: \(indexPath.item)")
             return nil
         }
         
