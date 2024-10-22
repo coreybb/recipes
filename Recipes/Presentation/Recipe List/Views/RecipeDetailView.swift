@@ -82,13 +82,13 @@ final class RecipeDetailView: UIView {
         
         let topPadding: CGFloat = 8
         let lateralPadding: CGFloat = 8
-        let minimiumBottomPadding: CGFloat = 24
+        let minimumBottomPadding: CGFloat = 24
         
         NSLayoutConstraint.activate([
             cuisineLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: topPadding),
             cuisineLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: lateralPadding),
             cuisineLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -lateralPadding),
-            cuisineLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -minimiumBottomPadding)
+            cuisineLabel.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -minimumBottomPadding)
         ])
     }
 }

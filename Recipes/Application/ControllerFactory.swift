@@ -14,11 +14,16 @@ final class ControllerFactory {
     
     func makeRecipeListModalController(onSortTapped: @escaping (SortParameter) -> Void) -> RecipeListModalController {
         let controller = RecipeListModalController()
-        if let controller = controller.presentationController as? UISheetPresentationController {
-            controller.detents = [.medium()]
-         }
+        if let presentationController = controller.presentationController as? UISheetPresentationController {
+            presentationController.detents = [.medium()]
+        }
         controller.onSortTapped = onSortTapped
         controller.view.layer.cornerRadius = 24
         return controller
+    }
+    
+    
+    func makeNoRecipeDataController() -> NoRecipeDataController {
+        NoRecipeDataController()
     }
 }

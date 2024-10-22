@@ -3,17 +3,16 @@ import UIKit
 class LineView: UIView {
     
     
-    //----------------------------
+
     //  MARK: - Public Properties
-    //----------------------------
+    
     let orientation: Orientation
     let thickness: CGFloat
     
     
     
-    //---------------
     //  MARK: - Init
-    //---------------
+    
     init(
         orientation: Orientation,
         color: UIColor = .lightGray,
@@ -32,19 +31,15 @@ class LineView: UIView {
     }
     
     
-    
-    //---------------------
-    //  MARK: - Public API
-    //---------------------
+
+    //  MARK: - Internal API
     enum Orientation {
         case horizontal, vertical
     }
     
-    
-    
-    //----------------------
+
     //  MARK: - Private API
-    //----------------------
+    
     private func setup() {
         
         switch orientation {

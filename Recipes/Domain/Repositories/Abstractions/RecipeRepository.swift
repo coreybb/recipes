@@ -7,7 +7,9 @@ protocol RecipeRepository {
 extension RecipeRepository where Self: NetworkServicing {
     
     func fetchRecipes() async throws -> [Recipe] {
-        let response: RecipesResponse = try await networkingService.request(RecipesEndpoint())
+        let endpoint = EmptyDataRecipesEndpoint()
+        let response: RecipesResponse = try await networkingService.request(endpoint)
+        print(response.recipes)
         return response.recipes
     }
 }

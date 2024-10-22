@@ -101,19 +101,17 @@ extension Endpoint {
     /// - Returns: A complete `URL` object for the request.
     var url: URL {
         var baseComponents = baseComponents
-        
-        guard queryItems?.isEmpty == false else {
-            return baseComponents?.url ?? baseURL
+
+        if let queryItems = queryItems, !queryItems.isEmpty {
+            baseComponents?.queryItems = queryItems
         }
-        
-        baseComponents?.queryItems = queryItems
-        
+
         guard let url = baseComponents?.url else {
             preconditionFailure(
                 "Invalid URL components: \(String(describing: baseComponents))"
             )
         }
-        
+
         return url
     }
     
@@ -124,6 +122,7 @@ extension Endpoint {
     func urlRequest(using encoder: JSONEncoder? = nil) throws -> URLRequest {
         
         var request = URLRequest(url: url)
+        print("URL IN REQUEST:", url)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = headers?.toDictionary()
         

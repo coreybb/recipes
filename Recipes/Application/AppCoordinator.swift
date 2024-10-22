@@ -3,6 +3,7 @@ import UIKit
 protocol RecipeListCoordinating: AnyObject {
     func showRecipeDetail(for recipe: Recipe)
     func showOptionsModal(from viewController: UIViewController, onSortTapped: @escaping (SortParameter) -> Void)
+    func showNoRecipeData(from viewController: UIViewController)
 }
 
 
@@ -61,5 +62,10 @@ extension AppCoordinator: RecipeListCoordinating {
     func showOptionsModal(from viewController: UIViewController, onSortTapped: @escaping (SortParameter) -> Void) {
         let controller = controllerFactory.makeRecipeListModalController(onSortTapped: onSortTapped)
         viewController.present(controller, animated: true)
+    }
+    
+    
+    func showNoRecipeData(from viewController: UIViewController) {
+        viewController.present(controllerFactory.makeNoRecipeDataController(), animated: true)
     }
 }

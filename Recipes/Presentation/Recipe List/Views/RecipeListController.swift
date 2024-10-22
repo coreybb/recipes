@@ -47,6 +47,7 @@ final class RecipeListController: UIViewController {
         setupBindings()
         setupView()
         viewModel.streamRecipes()
+        coordinator!.showNoRecipeData(from: self)
     }
     
     
