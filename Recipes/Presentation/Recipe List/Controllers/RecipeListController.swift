@@ -47,7 +47,6 @@ final class RecipeListController: UIViewController {
         setupBindings()
         setupView()
         viewModel.streamRecipes()
-        coordinator!.showNoRecipeData(from: self)
     }
     
     
@@ -115,6 +114,12 @@ extension RecipeListController: Bindable {
             } else {
                 mainView.collectionView.refreshControl?.endRefreshing()
                 mainView.activityIndicator.stopAnimating()
+                
+                if viewModel.recipeCellViewModels.isEmpty {
+                    mainView.collectionView.backgroundView = NoRecipeDataView()
+                } else {
+                    mainView.collectionView.backgroundView = nil
+                }
             }
         }
 

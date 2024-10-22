@@ -1,27 +1,6 @@
 import UIKit
 
-
-final class NoRecipeDataController: UIViewController {
-    
-    private let mainView = NoRecipesDataView()
-    
-    
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        modalPresentationStyle = .automatic
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func loadView() {
-        view = mainView
-    }
-}
-
-
-fileprivate final class NoRecipesDataView: UIView {
+final class NoRecipeDataView: UIView {
     
     private let imageView = {
         let image = UIImage(systemName: "exclamationmark.triangle")!
@@ -62,7 +41,6 @@ fileprivate final class NoRecipesDataView: UIView {
     //  MARK: - Private API
     
     private func layoutUI() {
-        
         layoutImageView()
         layoutLabel()
     }
@@ -82,7 +60,6 @@ fileprivate final class NoRecipesDataView: UIView {
     
     
     private func layoutLabel() {
-        
         let topPadding: CGFloat = 24
         let lateralPadding: CGFloat = 20
         
