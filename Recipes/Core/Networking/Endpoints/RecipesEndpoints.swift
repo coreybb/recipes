@@ -9,7 +9,7 @@ struct RecipesEndpointGroup: EndpointGroup {
 /// Represents the main endpoint for fetching recipes.
 struct RecipesEndpoint: GroupedEndpoint {
     typealias Group = RecipesEndpointGroup
-    let path = RecipesEndpointPath.recipes.rawValue
+    let path: String? = RecipesEndpointPath.recipes.rawValue
 }
 
 
@@ -17,7 +17,7 @@ struct RecipesEndpoint: GroupedEndpoint {
 /// This endpoint is intended for testing purposes only.
 struct MalformedRecipesEndpoint: GroupedEndpoint {
     typealias Group = RecipesEndpointGroup
-    let path = RecipesEndpointPath.malformed.rawValue
+    let path: String? = RecipesEndpointPath.malformed.rawValue
 }
 
 
@@ -25,7 +25,7 @@ struct MalformedRecipesEndpoint: GroupedEndpoint {
 /// This endpoint is intended for testing purposes only.
 struct EmptyDataRecipesEndpoint: GroupedEndpoint {
     typealias Group = RecipesEndpointGroup
-    let path = RecipesEndpointPath.empty.rawValue
+    let path: String? = RecipesEndpointPath.empty.rawValue
 }
 
 

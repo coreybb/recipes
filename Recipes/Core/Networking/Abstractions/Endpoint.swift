@@ -30,6 +30,11 @@ extension GroupedEndpoint {
 
 /// A protocol that defines the structure of an API endpoint, including the details
 /// needed to construct a network request.
+///
+/// NOTE: - When overriding optional properties in conforming types, they must be declared as
+///        optionals to match the protocol definition. Failure to do so will result
+///        in the default implementation (which likely returns `nil`) being used instead of the
+///        overridden value.
 protocol Endpoint: Sendable {
     
     /// The type of the request body. Defaults to `Never` if no body is used.
@@ -100,19 +105,22 @@ extension Endpoint {
     /// Constructs the full URL for the request, combining the `baseURL`, `path`, and `queryItems`.
     /// - Returns: A complete `URL` object for the request.
     var url: URL {
-        var baseComponents = baseComponents
+        var fullURL = baseURL
 
-        if let queryItems = queryItems, !queryItems.isEmpty {
-            baseComponents?.queryItems = queryItems
+        if let path = path {
+            fullURL = fullURL.appendingPathComponent(path)
         }
-
-        guard let url = baseComponents?.url else {
-            preconditionFailure(
-                "Invalid URL components: \(String(describing: baseComponents))"
-            )
+        
+        guard let queryItems, !queryItems.isEmpty else {
+            return fullURL
         }
-
-        return url
+        
+        var components = URLComponents(url: fullURL, resolvingAgainstBaseURL: false)
+        components?.queryItems = queryItems
+        guard let urlWithQuery = components?.url else {
+            preconditionFailure("Invalid URL components: \(String(describing: components))")
+        }
+        return urlWithQuery
     }
     
 
@@ -120,9 +128,7 @@ extension Endpoint {
     /// - Parameter encoder: A `JSONEncoder` for encoding the request body if one is present.
     /// - Returns: A configured `URLRequest` object.
     func urlRequest(using encoder: JSONEncoder? = nil) throws -> URLRequest {
-        
         var request = URLRequest(url: url)
-        print("URL IN REQUEST:", url)
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = headers?.toDictionary()
         
