@@ -1,7 +1,3 @@
-Here's the plaintext markdown version for your README.md:
-
-# Recipes README
-
 ## Steps to Run the App
 
 To run Recipes on your local machine:
