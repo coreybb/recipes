@@ -95,12 +95,14 @@ final class RecipeCollectionCell: UICollectionViewCell {
     
     
     //  MARK: - Deinitialization
+    
     deinit {
         imageSubscription = nil
     }
 }
 
 
+//  MARK: - Shadow View
 
 fileprivate final class ShadowView: UIView, ShadowCasting {
     

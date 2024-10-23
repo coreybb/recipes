@@ -2,8 +2,6 @@ import UIKit
 
 class LineView: UIView {
     
-    
-
     //  MARK: - Public Properties
     
     let orientation: Orientation
@@ -33,6 +31,7 @@ class LineView: UIView {
     
 
     //  MARK: - Internal API
+    
     enum Orientation {
         case horizontal, vertical
     }

@@ -29,16 +29,17 @@ final class RecipeCellViewModel {
     
     
     //  MARK: - Internal API
+    
     func loadImageIfNeeded() {
         guard image == nil,
-              let url = imageURL,
+              let imageURL,
               !imageLoadDidFail else {
             return
         }
 
         imageLoadingTask = Task {
             do {
-                let loadedImage = try await fetchImageUseCase.execute(forURL: url)
+                let loadedImage = try await fetchImageUseCase.execute(forURL: imageURL)
                 await MainActor.run {
                     self.image = loadedImage
                 }

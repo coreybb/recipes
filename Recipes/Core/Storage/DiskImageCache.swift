@@ -60,6 +60,17 @@ actor DiskImageCache {
 
 extension DiskImageCache {
     
+    /// Generates a filesystem-safe URL for storing cached images.
+    ///
+    /// We use SHA256 hashing for filenames because:
+    /// - It produces a fixed-length output (64 hex chars) regardless of input length
+    /// - It's filesystem-safe (only contains hexadecimal chars)
+    /// - It has extremely low collision probability (2^256 possible values)
+    /// - It's deterministic (same input always produces same output)
+    /// - It's fast to compute with hardware acceleration on modern devices
+    ///
+    /// - Parameter fileName: The original filename or URL to be hashed
+    /// - Returns: A URL with the SHA256 hash as the filename within the cache directory
     private func url(forFileName fileName: String) -> URL {
         cacheDirectoryURL.appendingPathComponent(fileName.asSHA256)
     }
@@ -70,6 +81,8 @@ extension DiskImageCache {
 
 fileprivate extension String {
     
+    /// Computes the SHA256 hash of the string and returns it as a hexadecimal string.
+    /// Used to generate filesystem-safe, fixed-length filenames for caching.
     var asSHA256: String {
         let data = Data(utf8)
         var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))

@@ -12,6 +12,7 @@ struct Recipe: Hashable {
 
 
 //  MARK: - Custom Deserialization
+
 extension Recipe: Decodable {
     
     enum CodingKeys: String, CodingKey {

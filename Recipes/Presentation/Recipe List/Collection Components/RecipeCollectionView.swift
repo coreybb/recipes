@@ -4,6 +4,7 @@ import Combine
 final class RecipeCollectionView: UICollectionView {
     
     //  MARK: - Internal Properties
+    
     let didPullToRefresh = PassthroughSubject<Void, Never>()
     
     
