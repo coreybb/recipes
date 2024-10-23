@@ -5,9 +5,9 @@ final class RecipeListViewModel {
     
     //  MARK: - Internal Properties
     
-    var onRecipeUpdation = PassthroughSubject<Void, Never>()
-    @Published var displayedRecipeCellViewModels = [RecipeCellViewModel]()
+    @Published private(set) var displayedRecipeCellViewModels = [RecipeCellViewModel]()
     @Published private(set) var isLoading = false
+    @Published var error: Error?
     
     
     //  MARK: - Private Properties
@@ -41,7 +41,9 @@ final class RecipeListViewModel {
                 }
             } catch {
                 if !Task.isCancelled {
-                    print(error)
+                    await MainActor.run {
+                        self.error = error
+                    }
                 }
             }
         }
@@ -71,7 +73,8 @@ final class RecipeListViewModel {
         
         displayedRecipeCellViewModels = recipeCellViewModels.filter {
             $0.name.lowercased().contains(query.lowercased())
-            || $0.cuisine.lowercased().contains(query.lowercased())
+            ||
+            $0.cuisine.lowercased().contains(query.lowercased())
         }
     }
     
@@ -95,7 +98,6 @@ extension RecipeListViewModel {
         }
         recipeCellViewModels.append(contentsOf: cellViewModels)
         displayedRecipeCellViewModels.append(contentsOf: cellViewModels)
-        onRecipeUpdation.send()
     }
     
     

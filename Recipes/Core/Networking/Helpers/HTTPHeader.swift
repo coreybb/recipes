@@ -7,7 +7,7 @@ struct HTTPHeader: Sendable {
     let value: String
 
     
-    //  MARK: - Init
+    //  MARK: - Initialization
     
     /// Initializes a new `HTTPHeader` with a custom name and value.
     /// - Parameters:

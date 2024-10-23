@@ -13,14 +13,24 @@ extension ConfigurationConstant {
             "API_BASE_URL"
         }
     }
+
     
-    var value: String {
-        guard let value: String = try? Configuration.value(for: key) else {
+    func value(in bundle: Bundle = .main) -> String {
+        guard let value: String = try? Configuration.value(for: key, in: bundle) else {
+            #if DEBUG
             fatalError("\(key) is not set in the project's info.plist.")
+            #else
+            return ""
+            #endif
         }
         
         return value
     }
+}
+
+
+protocol ConfigurationValueProviding {
+    static func value<T>(for key: String, in bundle: BundleProtocol) throws -> T where T: LosslessStringConvertible
 }
 
 
@@ -30,11 +40,14 @@ enum Configuration {
     enum Error: Swift.Error {
         case missingKey, invalidValue
     }
+}
 
+
+extension Configuration: ConfigurationValueProviding {
     
-    static func value<T>(for key: String) throws -> T where T: LosslessStringConvertible {
+    static func value<T>(for key: String, in bundle: BundleProtocol) throws -> T where T: LosslessStringConvertible {
         
-        guard let object: Any = Bundle.main.object(forInfoDictionaryKey: key) else {
+        guard let object: Any = bundle.object(forInfoDictionaryKey: key) else {
             throw Error.missingKey
         }
 
@@ -47,3 +60,11 @@ enum Configuration {
         }
     }
 }
+
+
+
+protocol BundleProtocol {
+    func object(forInfoDictionaryKey key: String) -> Any?
+}
+
+extension Bundle: BundleProtocol { }

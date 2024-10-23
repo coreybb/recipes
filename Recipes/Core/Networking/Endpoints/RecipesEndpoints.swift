@@ -2,7 +2,7 @@ import Foundation
 
 /// Defines the group of endpoints related to recipes.
 struct RecipesEndpointGroup: EndpointGroup {
-    static let baseURL = URL(string: ConfigurationConstant.apiBaseURL.value)!
+    static let baseURL = URL(string: ConfigurationConstant.apiBaseURL.value())!
 }
 
 

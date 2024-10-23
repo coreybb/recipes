@@ -11,7 +11,7 @@ class LineView: UIView {
     
     
     
-    //  MARK: - Init
+    //  MARK: - Initialization
     
     init(
         orientation: Orientation,

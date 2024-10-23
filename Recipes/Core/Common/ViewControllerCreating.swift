@@ -1,6 +1,13 @@
 import UIKit
 
-final class ControllerFactory {
+protocol ViewControllerCreating {
+    func makeRecipeListController(container: DependencyContainer, coordinator: RecipeListCoordinating) -> RecipeListController
+    func makeRecipeListModalController(onSortTapped: @escaping (SortParameter) -> Void) -> RecipeListModalController
+    func makeNoRecipeDataController() -> NoRecipeDataController
+}
+
+
+extension ViewControllerCreating {
     
     func makeRecipeListController(
         container: DependencyContainer,

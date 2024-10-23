@@ -12,12 +12,13 @@ protocol ShadowCasting: UIView {
 
 
 //  MARK: - Default Implementation
+
 extension ShadowCasting {
    
     func addDropShadow(
         withOffset offset: CGFloat = 2.5,
-        opacity: Float = 0.3,
-        radius: CGFloat = 12
+        opacity: Float = 0.2,
+        radius: CGFloat = 18
     ) {
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = opacity

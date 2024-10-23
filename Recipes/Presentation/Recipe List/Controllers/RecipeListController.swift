@@ -1,7 +1,7 @@
 import UIKit
 import Combine
 
-final class RecipeListController: UIViewController {
+final class RecipeListController: UIViewController, ErrorAlertPresenting {
     
     //  MARK: - Internal Properties
     
@@ -69,6 +69,7 @@ extension RecipeListController: Bindable {
     private func setupBindings() {
         setupCollectionViewBindings()
         setupUIInteractionBindings()
+        setupErrorHandlingBindings()
     }
 
     
@@ -126,6 +127,26 @@ extension RecipeListController: Bindable {
         subscribe(mainView.collectionView.didPullToRefresh) { [weak self] in
             self?.viewModel.refreshRecipes()
         }
+    }
+    
+    
+    private func setupErrorHandlingBindings() {
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .sink
+        { [weak self] error in
+            guard let self = self,
+                  let error = error else { return }
+            print(error)
+            self.presentErrorAlert(
+                title: "Error",
+                message: "Something went wrong. "
+                + "Please check your connection and try again later.")
+            {
+                self.viewModel.error = nil
+            }
+        }
+        .store(in: &cancellables)
     }
 }
 

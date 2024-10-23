@@ -7,7 +7,7 @@ final actor DefaultImageLocalRepository: ImageLocalRepository {
     private let diskCache: DiskImageCache?
     
     
-    //  MARK: - Init
+    //  MARK: - Initialization
     init() {
         do {
             diskCache = try DiskImageCache()
@@ -36,6 +36,11 @@ final actor DefaultImageLocalRepository: ImageLocalRepository {
         saveImageToMemoryCache(image, url: url)
         try await saveImageToDisk(image, url: url)
     }
+    
+    
+    func saveImageToMemoryCache(_ image: UIImage, url: URL) {
+        memoryCache.setObject(image, forKey: url.absoluteString as NSString)
+    }
 }
 
 
@@ -46,11 +51,6 @@ extension DefaultImageLocalRepository {
     
     private func saveImageToDisk(_ image: UIImage, url: URL) async throws {
         try await diskCache?.save(image: image, fileName: url.absoluteString)
-    }
-    
-    
-    private func saveImageToMemoryCache(_ image: UIImage, url: URL) {
-        memoryCache.setObject(image, forKey: url.absoluteString as NSString)
     }
     
     

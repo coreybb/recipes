@@ -6,7 +6,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     private let dependencyContainer = DependencyContainer()
-    private let controllerFactory = ControllerFactory()
+    private let controllerFactory = ViewControllerFactory()
     private var coordinator: Coordinator?
 
     

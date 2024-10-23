@@ -10,12 +10,14 @@ final actor DefaultFetchImageUseCase: FetchImageUseCase {
     
     
     //  MARK: - Private Properties
+    
     private let remoteRepository: ImageRemoteRepository
     private let localRepository: ImageLocalRepository
     
     
     
-    //  MARK: - Init
+    //  MARK: - Initialization
+    
     init(
         remoteRepository: ImageRemoteRepository,
         localRepository: ImageLocalRepository
@@ -27,6 +29,7 @@ final actor DefaultFetchImageUseCase: FetchImageUseCase {
     
     
     //  MARK: - Internal API
+    
     func execute(forURL url: URL) async throws -> UIImage {
         do {
             return try await localRepository.getImage(forURL: url)

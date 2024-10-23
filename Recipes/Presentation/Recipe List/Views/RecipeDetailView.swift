@@ -29,6 +29,7 @@ final class RecipeDetailView: UIView {
     
     
     //  MARK: - Initialization
+    
     init() {
         super.init(frame: .zero)
         backgroundColor = .white

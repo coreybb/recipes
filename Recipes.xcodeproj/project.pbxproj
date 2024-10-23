@@ -14,22 +14,44 @@
 			remoteGlobalIDString = 028D1F162CC001E500BE316B;
 			remoteInfo = Recipes;
 		};
-		028D1F382CC001E700BE316B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 028D1F0F2CC001E500BE316B /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 028D1F162CC001E500BE316B;
-			remoteInfo = Recipes;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		028D1F172CC001E500BE316B /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		028D1F2D2CC001E700BE316B /* RecipesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		028D1F372CC001E700BE316B /* RecipesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RecipesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		020DE1052CC83C1900EEC7B4 /* Exceptions for "RecipesTests" folder in "Recipes" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Configuration/ConfigurationTests.swift,
+				Configuration/MockBundle.swift,
+				Images/DefaultImageLocalRepositoryTests.swift,
+				Images/DiskImageCacheTests.swift,
+				Networking/MockNetworkDataTransport.swift,
+				Networking/NetworkingServiceTests.swift,
+				Networking/RecipeRecipositoryTests.swift,
+				"Recipe List View Model/Mocks.swift",
+				"Recipe List View Model/RecipieListViewModelTests.swift",
+			);
+			target = 028D1F162CC001E500BE316B /* Recipes */;
+		};
+		020DE1062CC83C1900EEC7B4 /* Exceptions for "RecipesTests" folder in "RecipesTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Configuration/ConfigurationTests.swift,
+				Configuration/MockBundle.swift,
+				Images/DefaultImageLocalRepositoryTests.swift,
+				Images/DiskImageCacheTests.swift,
+				Networking/MockNetworkDataTransport.swift,
+				Networking/NetworkingServiceTests.swift,
+				Networking/RecipeRecipositoryTests.swift,
+				"Recipe List View Model/Mocks.swift",
+				"Recipe List View Model/RecipieListViewModelTests.swift",
+			);
+			target = 028D1F2C2CC001E700BE316B /* RecipesTests */;
+		};
 		028D1F3F2CC001E700BE316B /* Exceptions for "Recipes" folder in "Recipes" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -40,22 +62,21 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		020DE1022CC83C1900EEC7B4 /* RecipesTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				020DE1052CC83C1900EEC7B4 /* Exceptions for "RecipesTests" folder in "Recipes" target */,
+				020DE1062CC83C1900EEC7B4 /* Exceptions for "RecipesTests" folder in "RecipesTests" target */,
+			);
+			path = RecipesTests;
+			sourceTree = "<group>";
+		};
 		028D1F192CC001E500BE316B /* Recipes */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				028D1F3F2CC001E700BE316B /* Exceptions for "Recipes" folder in "Recipes" target */,
 			);
 			path = Recipes;
-			sourceTree = "<group>";
-		};
-		028D1F302CC001E700BE316B /* RecipesTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = RecipesTests;
-			sourceTree = "<group>";
-		};
-		028D1F3A2CC001E700BE316B /* RecipesUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = RecipesUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -75,13 +96,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		028D1F342CC001E700BE316B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -89,8 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				028D1F192CC001E500BE316B /* Recipes */,
-				028D1F302CC001E700BE316B /* RecipesTests */,
-				028D1F3A2CC001E700BE316B /* RecipesUITests */,
+				020DE1022CC83C1900EEC7B4 /* RecipesTests */,
 				028D1F182CC001E500BE316B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -100,7 +113,6 @@
 			children = (
 				028D1F172CC001E500BE316B /* Recipes.app */,
 				028D1F2D2CC001E700BE316B /* RecipesTests.xctest */,
-				028D1F372CC001E700BE316B /* RecipesUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -121,6 +133,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				020DE1022CC83C1900EEC7B4 /* RecipesTests */,
 				028D1F192CC001E500BE316B /* Recipes */,
 			);
 			name = Recipes;
@@ -143,38 +156,12 @@
 			dependencies = (
 				028D1F2F2CC001E700BE316B /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				028D1F302CC001E700BE316B /* RecipesTests */,
-			);
 			name = RecipesTests;
 			packageProductDependencies = (
 			);
 			productName = RecipesTests;
 			productReference = 028D1F2D2CC001E700BE316B /* RecipesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		028D1F362CC001E700BE316B /* RecipesUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 028D1F482CC001E700BE316B /* Build configuration list for PBXNativeTarget "RecipesUITests" */;
-			buildPhases = (
-				028D1F332CC001E700BE316B /* Sources */,
-				028D1F342CC001E700BE316B /* Frameworks */,
-				028D1F352CC001E700BE316B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				028D1F392CC001E700BE316B /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				028D1F3A2CC001E700BE316B /* RecipesUITests */,
-			);
-			name = RecipesUITests;
-			packageProductDependencies = (
-			);
-			productName = RecipesUITests;
-			productReference = 028D1F372CC001E700BE316B /* RecipesUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
@@ -190,10 +177,6 @@
 						CreatedOnToolsVersion = 16.0;
 					};
 					028D1F2C2CC001E700BE316B = {
-						CreatedOnToolsVersion = 16.0;
-						TestTargetID = 028D1F162CC001E500BE316B;
-					};
-					028D1F362CC001E700BE316B = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = 028D1F162CC001E500BE316B;
 					};
@@ -215,7 +198,6 @@
 			targets = (
 				028D1F162CC001E500BE316B /* Recipes */,
 				028D1F2C2CC001E700BE316B /* RecipesTests */,
-				028D1F362CC001E700BE316B /* RecipesUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -229,13 +211,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		028D1F2B2CC001E700BE316B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		028D1F352CC001E700BE316B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -259,13 +234,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		028D1F332CC001E700BE316B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -273,11 +241,6 @@
 			isa = PBXTargetDependency;
 			target = 028D1F162CC001E500BE316B /* Recipes */;
 			targetProxy = 028D1F2E2CC001E700BE316B /* PBXContainerItemProxy */;
-		};
-		028D1F392CC001E700BE316B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 028D1F162CC001E500BE316B /* Recipes */;
-			targetProxy = 028D1F382CC001E700BE316B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -495,40 +458,6 @@
 			};
 			name = Release;
 		};
-		028D1F492CC001E700BE316B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = QLP74BV84M;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = lakonic.RecipesUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Recipes;
-			};
-			name = Debug;
-		};
-		028D1F4A2CC001E700BE316B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = QLP74BV84M;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = lakonic.RecipesUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Recipes;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -555,15 +484,6 @@
 			buildConfigurations = (
 				028D1F462CC001E700BE316B /* Debug */,
 				028D1F472CC001E700BE316B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		028D1F482CC001E700BE316B /* Build configuration list for PBXNativeTarget "RecipesUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				028D1F492CC001E700BE316B /* Debug */,
-				028D1F4A2CC001E700BE316B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

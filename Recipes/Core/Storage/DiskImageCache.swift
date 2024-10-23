@@ -4,14 +4,12 @@ import CommonCrypto
 
 actor DiskImageCache {
     
-    
-    //  MARK: - Private Properties
     private let fileManager: FileManager
     private let cacheDirectoryURL: URL
     
     
+    //  MARK: - Initialization
     
-    //  MARK: - Init
     init() throws {
         self.fileManager = FileManager.default
         let cachesDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask)
@@ -24,8 +22,8 @@ actor DiskImageCache {
     }
     
     
-    
     // MARK: - Internal API
+    
     func save(image: UIImage, fileName: String) async throws {
         guard let data = image.pngData() else {
             throw ImageError.serialization
@@ -55,20 +53,21 @@ actor DiskImageCache {
             throw ImageError.fileReadError
         }
     }
+}
     
     
+//  MARK: - Private API
+
+extension DiskImageCache {
     
-    //  MARK: - Private API
     private func url(forFileName fileName: String) -> URL {
         cacheDirectoryURL.appendingPathComponent(fileName.asSHA256)
     }
 }
 
 
-
-
-
 //  MARK: - SHA256 Extension
+
 fileprivate extension String {
     
     var asSHA256: String {

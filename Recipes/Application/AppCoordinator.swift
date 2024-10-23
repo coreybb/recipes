@@ -12,14 +12,14 @@ final class AppCoordinator: Coordinator {
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []
     private let dependencyContainer: DependencyContainer
-    private let controllerFactory: ControllerFactory
+    private let controllerFactory: ViewControllerFactory
     
     
     //  MARK: - Initialization
     init(
         navigationController: UINavigationController,
         dependencyContainer: DependencyContainer,
-        controllerFactory: ControllerFactory
+        controllerFactory: ViewControllerFactory
     ) {
         self.navigationController = navigationController
         self.dependencyContainer = dependencyContainer
